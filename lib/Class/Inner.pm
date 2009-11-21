@@ -2,8 +2,7 @@ package Class::Inner;
 
 use vars qw/$VERSION/;
 
-$VERSION = 0.1;
-
+$VERSION = 0.200_001;
 
 use strict;
 use Carp;
@@ -149,10 +148,7 @@ symbol table.
 sub clean_symbol_table {
     my $class = shift;
     no strict 'refs';
-    foreach my $symbol (keys %{"$class\::"}) {
-	delete ${"$class\::"}{$symbol};
-    }
-    delete $::{"$class\::"};	
+    undef %{"${class}::"};	
 }
 
 =item B<new_classname>
@@ -165,7 +161,7 @@ Returns a name for the next anonymous class.
     my $class_counter;
 
     sub new_classname {
-	my $baseclass = ref($_[0]) || $_[0];
+	my $baseclass = shift;
 	return "$baseclass\::__A" . $class_counter++;
     }
 }
@@ -176,6 +172,8 @@ __END__
 =back
 
 =head1 AUTHOR
+
+Maintained by Arun Prasaad  C<< <arunbear@cpan.org> >>
 
 Copyright (c) 2001 by Piers Cawley E<lt>pdcawley@iterative-software.comE<gt>.
 
